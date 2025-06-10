@@ -1,1 +1,545 @@
 <h1>Hello!</h1>
+import React, { useState } from 'react';
+
+export default function App() {
+  const [activeTab, setActiveTab] = useState('menu');
+
+  return (
+    <div className="font-sans text-gray-800 min-h-screen">
+      {/* Navigation Tabs */}
+      <nav className="bg-red-600 text-white shadow-md">
+        <div className="container mx-auto flex justify-center space-x-8 py-4">
+          <button onClick={() => setActiveTab('menu')} className={`px-4 py-2 rounded ${activeTab === 'menu' ? 'bg-yellow-500 text-black font-semibold' : 'hover:bg-red-700'}`}>Menú</button>
+          <button onClick={() => setActiveTab('sweet')} className={`px-4 py-2 rounded ${activeTab === 'sweet' ? 'bg-yellow-500 text-black font-semibold' : 'hover:bg-red-700'}`}>Sweet Bites</button>
+          <button onClick={() => setActiveTab('bouncy')} className={`px-4 py-2 rounded ${activeTab === 'bouncy' ? 'bg-yellow-500 text-black font-semibold' : 'hover:bg-red-700'}`}>Bouncy Castles</button>
+        </div>
+      </nav>
+
+      {/* Content based on active tab */}
+      <main className="container mx-auto px-4 py-8">
+        {activeTab === 'menu' && MenuSection()}
+        {activeTab === 'sweet' && SweetBitesSection()}
+        {activeTab === 'bouncy' && BouncyCastlesSection()}
+      </main>
+    </div>
+  );
+}
+
+// --- Section 1: Menú ---
+function MenuSection() {
+  const [openCategory, setOpenCategory] = useState(null);
+  const toggleCategory = (category) => {
+    setOpenCategory(openCategory === category ? null : category);
+  };
+
+  const menuItems = [
+    {
+      category: 'Breakfast & Lunch',
+      items: [
+        { name: 'Breakfast Sandwich', price: '$5', description: 'English muffin, egg, cheddar cheese, choice of bacon, ham or sausage' },
+        { name: 'Breakfast BLT', price: '$9', description: '2 eggs, bacon, lettuce, tomato, mayo on classic bun' },
+        { name: 'Breakfast Wrap', price: '$10', description: 'Scrambled eggs, taters, marble cheese, choice of bacon, ham or sausage' },
+        { name: 'Loaded Taters', price: '$8', description: 'Crispy taters, marble cheese, bacon crumble, tomato, sour cream' },
+        { name: 'Caesar Wrap', price: '$10', description: 'Romaine, croutons, bacon bits, Caesar dressing' },
+        { name: 'BLT', price: '$8', description: 'Bacon, lettuce, tomato on classic bun' }
+      ]
+    },
+    {
+      category: 'Jumbo Hot Dogs',
+      items: [
+        { name: 'Base Price', price: '$7', description: 'Add-ons: Cheese +$1.50, Chili +$2.50, Sauté Onions +$1.00 | Sauces: Hot, BBQ, Ranch, Mustard, Mayonnaise, Ketchup' }
+      ]
+    },
+    {
+      category: 'Chili & Poutine',
+      items: [
+        { name: 'Chili (Small)', price: '$10', description: 'Served with Garlic Bread' },
+        { name: 'Chili (Large)', price: '$16', description: 'Served with Garlic Bread' },
+        { name: 'Poutine (Small)', price: '$7', description: '' },
+        { name: 'Poutine (Large)', price: '$10', description: '' },
+        { name: 'Wedges Poutine (Small)', price: '$9', description: '' },
+        { name: 'Wedges Poutine (Large)', price: '$12', description: '' },
+        { name: 'Chili Cheese Fries (Small)', price: '$9', description: '' },
+        { name: 'Chili Cheese Fries (Large)', price: '$13', description: '' }
+      ]
+    },
+    {
+      category: 'Chicken Fingers & Salads',
+      items: [
+        { name: '3 Chicken Fingers & Fries', price: '$10', description: 'Served with plum sauce' },
+        { name: 'Baked Panzerotti (Small)', price: '$12', description: 'Choice of 4 toppings' },
+        { name: 'Baked Panzerotti (Large)', price: '$16', description: 'Choice of 4 toppings' },
+        { name: 'Caesar Salad', price: '$6', description: '' },
+        { name: 'Garden Salad', price: '$6', description: 'With Italian dressing' }
+      ]
+    },
+    {
+      category: 'Burgers & Sandwiches',
+      items: [
+        { name: 'Hamburger', price: '$10', description: 'All burgers come with fries' },
+        { name: 'Cheeseburger', price: '$13', description: 'Fries included' },
+        { name: 'Bacon Cheeseburger', price: '$15', description: 'Fries included' },
+        { name: 'Crispy Chicken Burger', price: '$13', description: 'Lettuce, mayonnaise on burger bun' },
+        { name: 'Chicken Ranch Sandwich', price: '$14', description: 'Cheddar cheese, lettuce, tomato, ranch on kaiser bun' },
+        { name: 'Salt Pork Sandwich', price: '$10', description: 'Crispy salt pork on fry bread with choice of toppings' }
+      ]
+    },
+    {
+      category: 'Sharables',
+      items: [
+        { name: '1lb Chicken Wings', price: '$13', description: 'Hot, Medium, Mild, Tequila Lime, Fire and Ice, BBQ, Honey Garlic' },
+        { name: '7 Piece Chicken Fingers', price: '$15', description: 'Served with plum sauce' },
+        { name: 'Jalapeño Poppers', price: '$10', description: 'Served with Marinara' },
+        { name: 'Mozzarella Sticks', price: '$8', description: 'Served with Marinara' },
+        { name: 'Battered Mushrooms', price: '$8', description: 'Served with ranch' },
+        { name: 'Garlic Bread', price: 'Small $4 / Large $7', description: 'Add cheese: Small $2 / Large $4' }
+      ]
+    },
+    {
+      category: 'Tacos!',
+      items: [
+        { name: 'Indian Fry Bread Taco (Small)', price: '$8', description: 'Fry bread, chili, marble cheese, lettuce, tomatoes, sour cream' },
+        { name: 'Indian Fry Bread Taco (Large)', price: '$13', description: '' },
+        { name: 'Fried Tacos', price: '$10', description: 'Four chicken or beef tacos on corn tortilla. Served with coleslaw, sour cream, salsa.' },
+        { name: 'Mexican Tacos', price: '$4 each', description: 'Corn tortilla, tomato, onions, cilantro, lemon wedge, hot/mild sauce' },
+        { name: 'Taco Fries (Small)', price: '$10', description: 'Crispy fries topped with tomatoes, onions, cilantro, hot/mild sauce, meat option' },
+        { name: 'Nachos (Small)', price: '$10', description: 'Marble cheese, onions, green peppers, tomatoes, salsa, sour cream' },
+        { name: 'Nachos (Large)', price: '$15', description: 'Add Chicken +$4.00, Add Chili +$5.00' },
+        { name: 'Chicken Quesadilla', price: '$12', description: 'Chicken and cheese. Served with sour cream and salsa' },
+        { name: 'Deluxe Quesadilla', price: '$14', description: 'Chicken, cheese, onions, green peppers, tomatoes. Served with sour cream and salsa' },
+        { name: 'Burrito (Small)', price: '$13', description: 'Toppings: Rice, beans, onions, lettuce, jalapeños, corn, cilantro, hot peppers' },
+        { name: 'Burrito (Large)', price: '$18', description: 'Toppings: Rice, beans, onions, lettuce, jalapeños, corn, cilantro, hot peppers' }
+      ]
+    },
+    {
+      category: 'Sides',
+      items: [
+        { name: 'Fries (Small)', price: '$4', description: '' },
+        { name: 'Fries (Large)', price: '$7', description: '' },
+        { name: 'Onion Rings', price: '$5', description: '' },
+        { name: 'Potato Wedges', price: '$5', description: '' },
+        { name: 'Fry Bread', price: '$2', description: '' },
+        { name: 'Side of Rice', price: '$4', description: '' },
+        { name: 'Side of Beans', price: '$4', description: '' },
+        { name: 'Side of Rice & Beans', price: '$6', description: '' },
+        { name: 'Corn Soup (Small)', price: '$6', description: '' },
+        { name: 'Corn Soup (Large)', price: '$10', description: '' },
+        { name: 'Taters', price: '$5', description: '' }
+      ]
+    },
+    {
+      category: 'Drinks',
+      items: [
+        { name: 'Pop', price: '$1.25 each', description: 'Coke, Diet Coke, Pepsi, Water, Root beer, Sprite, Ginger Ale, etc.' },
+        { name: 'Arizona', price: '$2.50', description: '' },
+        { name: 'Coffee', price: 'Medium $1.50 / Large $2', description: '' },
+        { name: 'Hot Chocolate', price: 'Medium $2 / Large $3', description: '' },
+        { name: 'Tea', price: '$1.50', description: '' },
+        { name: 'Bottle of Water', price: '$1', description: '' }
+      ]
+    },
+    {
+      category: 'International Pizzas',
+      items: [
+        { name: 'Canadian', price: 'Small $12 / Medium $15 / Large $19 / Xlarge $22', description: 'Pepperoni, Bacon, Mushrooms' },
+        { name: 'Extreme Pepperoni', price: 'Small $13 / Medium $15 / Large $19 / Xlarge $24', description: 'Loaded With Pepperoni & Cheese' },
+        { name: 'Classic', price: 'Small $13 / Medium $16 / Large $19 / Xlarge $22', description: 'Pepperoni, Mushrooms, Green Peppers, Parmesan Cheese' },
+        { name: 'Deluxe', price: 'Small $14 / Medium $18 / Large $22 / Xlarge $28', description: 'Pepperoni, Bacon, Ham, Green Peppers, Onion, Mushrooms' },
+        { name: 'Meat Lovers', price: 'Small $13 / Medium $15 / Large $20 / Xlarge $25', description: 'Bacon, Ham, Pepperoni, Italian Sausage' },
+        { name: 'Hawaiian', price: 'Small $10 / Medium $14 / Large $18 / Xlarge $22', description: 'Bacon, Ham, Pineapple' },
+        { name: 'Vegetarian', price: 'Small $10 / Medium $14 / Large $17 / Xlarge $20', description: 'Mushrooms, Tomatoes, Green Peppers, Onions' },
+        { name: 'Cheese Burger', price: 'Small $13 / Medium $17 / Large $21 / Xlarge $25', description: 'Ground Beef, Bacon, Tomato, Onion, Pickles' },
+        { name: 'Mexican', price: 'Small $12 / Medium $15 / Large $18 / Xlarge $21', description: 'Ground Beef, Onions, Jalapeños' },
+        { name: 'BBQ Chicken', price: 'Small $12 / Medium $15 / Large $18 / Xlarge $21', description: 'With BBQ Sauce & Chicken' },
+        { name: 'Build Your Own Pizza!', price: 'Small $8.99 / Medium $10.99 / Large $13.99 / Extra Large $16.99', description: 'Toppings: $1.00-$2.00 each depending on size' }
+      ]
+    }
+  ];
+
+  return (
+    <section id="menu" className="py-12 container mx-auto px-4">
+      <h2 className="text-3xl font-bold mb-8 text-center">Our Menu</h2>
+      <div className="space-y-4">
+        {menuItems.map((section, index) => (
+          <div key={index} className="bg-white rounded-lg shadow overflow-hidden">
+            <button
+              onClick={() => toggleCategory(section.category)}
+              className="w-full text-left px-6 py-4 flex justify-between items-center bg-red-500 text-white font-semibold"
+            >
+              {section.category}
+              <span>{openCategory === section.category ? '▼' : '▶'}</span>
+            </button>
+            {openCategory === section.category && (
+              <ul className="divide-y divide-gray-200">
+                {section.items.map((item, i) => (
+                  <li key={i} className="px-6 py-4">
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <h3 className="font-semibold">{item.name}</h3>
+                        <p className="text-sm text-gray-600">{item.description}</p>
+                      </div>
+                      <span className="font-medium text-red-600">{item.price}</span>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+// --- Section 2: Sweet Bites ---
+function SweetBitesSection() {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    message: ''
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    alert('Gracias por tu mensaje. Nos pondremos en contacto contigo pronto.');
+    setFormData({ name: '', email: '', message: '' });
+  };
+
+  return (
+    <div className="font-sans text-gray-800">
+      {/* Hero Section */}
+      <section className="relative bg-gradient-to-r from-pink-50 to-white min-h-screen flex items-center justify-center px-4">
+        <img src="https://placehold.co/1200x600/ffe0ec/ff69b4?text=Torta+Artesanal" alt="Torta Artesanal" className="absolute inset-0 w-full h-full object-cover opacity-20" />
+        <div className="relative z-10 text-center max-w-xl">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-4 text-pink-600 drop-shadow-lg">
+            Dulces creaciones para celebraciones inolvidables
+          </h2>
+          <a href="#contact" className="inline-block mt-4 px-6 py-3 rounded-full bg-yellow-400 hover:bg-yellow-300 text-white font-semibold transition-transform transform hover:scale-105 shadow-lg"> 
+            Contáctanos para tu próxima celebración
+          </a>
+        </div>
+      </section>
+      {/* Portfolio Gallery */}
+      <section id="portfolio" className="py-16 px-6 bg-white">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-3xl font-bold text-center mb-10 text-pink-600">Nuestras Creaciones</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[1, 2, 3, 4, 5, 6].map((i) => (
+              <div key={i} className="overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+                <img src={`https://placehold.co/600x400/ffe0ec/ff69b4?text=Creación+${i}`} alt={`Creación ${i}`} className="w-full h-64 object-cover" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+      {/* About Us */}
+      <section id="about" className="py-16 px-6 bg-pink-50">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-3xl font-bold text-center mb-10 text-pink-600">Sobre Nosotros</h2>
+          <div className="bg-white p-8 rounded-lg shadow-md">
+            <p className="mb-4">
+              Fundada por Ana Martínez, Sweet Bites nació con la pasión de transformar momentos especiales en experiencias dulces e inolvidables.
+            </p>
+            <p className="mb-4">
+              Ofrecemos tortas personalizadas, pasteles temáticos y postres elegantes hechos con amor y dedicación.
+            </p>
+            <ul className="space-y-2 text-gray-700">
+              <li><span className="font-semibold">Misión:</span> Crear experiencias dulces y memorables con cada creación.</li>
+              <li><span className="font-semibold">Visión:</span> Ser la elección número uno para todas las celebraciones especiales.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+      {/* Services */}
+      <section id="services" className="py-16 px-6 bg-white">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-3xl font-bold text-center mb-10 text-pink-600">Servicios</h2>
+          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            {[
+              "Tortas personalizadas",
+              "Pasteles temáticos",
+              "Dulces para eventos",
+              "Decoraciones especiales",
+              "Paquetes de postres"
+            ].map((service, index) => (
+              <li key={index} className="flex items-start space-x-3">
+                <span className="text-green-500">&#10003;</span> 
+                <span>{service}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+      {/* Contact Form */}
+      <section id="contact" className="py-16 px-6 bg-pink-50">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-3xl font-bold text-center mb-10 text-pink-600">Contáctanos</h2>
+          <div className="flex flex-col md:flex-row gap-8">
+            <div className="md:w-1/2">
+              <div className="bg-white p-6 rounded-lg shadow-md">
+                <h3 className="text-xl font-semibold mb-4">Información de Contacto</h3>
+                <ul className="space-y-3 text-gray-700">
+                  <li><strong>Teléfono:</strong> (519) 808-4884</li>
+                  <li><strong>Dirección:</strong> Calle Azúcar #123, Ciudad Dulce</li>
+                  <li><strong>Email:</strong> info@sweetbites.com</li>
+                </ul>
+              </div>
+            </div>
+            <div className="md:w-1/2">
+              <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md">
+                <h3 className="text-xl font-semibold mb-4">Escríbenos un Mensaje</h3>
+                <div className="mb-4">
+                  <label htmlFor="name" className="block text-gray-700 font-medium mb-1">Nombre</label>
+                  <input type="text" id="name" name="name" value={formData.name} onChange={handleChange} required className="w-full border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-pink-300" />
+                </div>
+                <div className="mb-4">
+                  <label htmlFor="email" className="block text-gray-700 font-medium mb-1">Correo Electrónico</label>
+                  <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} required className="w-full border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-pink-300" />
+                </div>
+                <div className="mb-4">
+                  <label htmlFor="message" className="block text-gray-700 font-medium mb-1">Mensaje</label>
+                  <textarea id="message" name="message" rows="4" value={formData.message} onChange={handleChange} required className="w-full border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-pink-300"></textarea>
+                </div>
+                <button type="submit" className="w-full bg-pink-500 hover:bg-pink-400 text-white font-semibold py-2 px-4 rounded-md transition-colors">
+                  Enviar Mensaje
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+      {/* Footer */}
+      <footer className="bg-gray-800 text-white py-8 px-6">
+        <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div>
+            <h3 className="font-bold text-lg mb-2">Sweet Bites</h3>
+            <p>Delicias hechas con amor para tus celebraciones más especiales.</p>
+          </div>
+          <div>
+            <h4 className="font-semibold mb-2">Horario</h4>
+            <p>Lun - Vie: 9am - 6pm<br />Sábados: 10am - 4pm</p>
+          </div>
+          <div>
+            <h4 className="font-semibold mb-2">Redes Sociales</h4>
+            <div className="flex space-x-4">
+              <a href="https://www.instagram.com/cakeandpastries_sweetbites"  target="_blank" rel="noopener noreferrer" className="hover:text-pink-400">Instagram</a>
+              <a href="#" className="hover:text-blue-400">Facebook</a>
+              <a href="#" className="hover:text-yellow-400">Pinterest</a>
+            </div>
+          </div>
+        </div>
+        <div className="text-center mt-6 text-sm text-gray-400">
+          © {new Date().getFullYear()} Sweet Bites. Todos los derechos reservados.
+        </div>
+      </footer>
+    </div>
+  );
+}
+
+// --- Section 3: Bouncy Castles ---
+function BouncyCastlesSection() {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    message: ''
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    alert('Gracias por tu mensaje. Nos pondremos en contacto contigo pronto.');
+    setFormData({ name: '', email: '', message: '' });
+  };
+
+  const packages = [
+    {
+      title: "Mini Castle",
+      description: "Perfecto para fiestas pequeñas con hasta 8 niños.",
+      price: "$150",
+      duration: "4 horas",
+      features: ["Climbing Wall", "Single Slide"]
+    },
+    {
+      title: "Super Bounce",
+      description: "Ideal para grupos medianos con múltiples actividades.",
+      price: "$250",
+      duration: "6 horas",
+      features: ["Double Slide", "Ball Pool", "Obstacle Course"]
+    },
+    {
+      title: "Ultimate Party",
+      description: "Todo incluido para una celebración inolvidable.",
+      price: "$350",
+      duration: "8 horas",
+      features: ["Velcro Entrance", "Ball Pool", "Climbing Wall", "Double Slide", "Food & Decoration Package"]
+    }
+  ];
+
+  return (
+    <div className="font-sans text-gray-800">
+      {/* Header */}
+      <header className="bg-blue-600 text-white p-6 flex justify-between items-center shadow-md">
+        <div className="flex items-center space-x-2">
+          <svg className="w-10 h-10" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+          </svg>
+          <h1 className="text-2xl font-bold">Bouncy Castles</h1>
+        </div>
+        <p className="text-sm md:text-base italic max-w-xs text-right">
+          Perfect for Birthday Parties, Family Celebrations & Any Special Occasion
+        </p>
+      </header>
+      {/* Hero Section */}
+      <section className="relative bg-gradient-to-r from-pink-300 to-blue-300 min-h-screen flex items-center justify-center px-4">
+        <img src="https://placehold.co/1200x600/ffcbdb/92c952?text=Bouncy+Castle" alt="Bouncy Castle" className="absolute inset-0 w-full h-full object-cover opacity-30" />
+        <div className="relative z-10 text-center max-w-xl">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-4 text-white drop-shadow-lg">
+            Rent Our Bouncy Castles for Unforgettable Fun!
+          </h2>
+          <a href="#contact" className="inline-block mt-4 px-6 py-3 rounded-full bg-yellow-500 hover:bg-yellow-400 text-white font-semibold transition-transform transform hover:scale-105 shadow-lg">  
+            Contact Us to Rent Now
+          </a>
+        </div>
+      </section>
+      {/* Features Section */}
+      <section id="features" className="py-16 px-6 bg-white">
+        <div className="max-w-5xl mx-auto">
+          <h2 className="text-3xl font-bold text-center mb-10 text-blue-700">Features Included</h2>
+          <ul className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {[
+              "Small Climbing Wall",
+              "Ball Pool",
+              "Double Slide",
+              "Obstacle Area",
+              "Velcro Entrance"
+            ].map((feature, index) => (
+              <li key={index} className="flex items-center space-x-3">
+                <span className="text-green-500">&#10003;</span>
+                <span>{feature}</span>
+              </li>
+            ))}
+          </ul>
+          <div className="mt-8 text-center text-gray-700 italic">
+            We offer packages that include dessert food and decoration. If you're interested, please ask about this package.
+          </div>
+        </div>
+      </section>
+      {/* Packages Section */}
+      <section id="packages" className="py-16 px-6 bg-gray-100">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-3xl font-bold text-center mb-12 text-blue-700">Our Rental Packages</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {packages.map((pkg, idx) => (
+              <div key={idx} className="bg-white rounded-lg shadow-lg overflow-hidden transform transition-all hover:scale-105 hover:shadow-xl">
+                <img src={`https://placehold.co/400x250/ffddbb/333333?text=${encodeURIComponent(pkg.title)}`} alt={pkg.title} className="w-full h-40 object-cover" />
+                <div className="p-6">
+                  <h3 className="text-xl font-bold mb-2">{pkg.title}</h3>
+                  <p className="text-gray-600 mb-4">{pkg.description}</p>
+                  <ul className="space-y-2 mb-4">
+                    {pkg.features.map((feat, i) => (
+                      <li key={i} className="flex items-center space-x-2 text-sm">
+                        <span className="text-green-500">&#10003;</span>  
+                        <span>{feat}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="text-lg font-semibold text-purple-600">Duration: {pkg.duration}</div>
+                  <div className="text-xl font-bold text-red-600 mt-2">{pkg.price}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+      {/* Payment Methods */}
+      <section className="py-12 px-6 bg-white">
+        <div className="max-w-3xl mx-auto text-center">
+          <h2 className="text-2xl font-bold mb-6 text-blue-700">Payment Methods Accepted</h2>
+          <ul className="flex flex-wrap justify-center gap-6 text-lg">
+            <li>Credit & Debit Cards</li>
+            <li>Cash</li>
+            <li>E-Transfer</li>
+          </ul>
+        </div>
+      </section>
+      {/* Contact Section */}
+      <section id="contact" className="py-16 px-6 bg-blue-50">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-3xl font-bold text-center mb-10 text-blue-700">Contact Us</h2>
+          <div className="flex flex-col md:flex-row gap-8">
+            <div className="md:w-1/2">
+              <div className="mb-6">
+                <h3 className="text-xl font-semibold mb-2">Call Us</h3>
+                <ul className="space-y-2">
+                  <li>(519) 808-4884</li>
+                  <li>(519) 808-7779</li>
+                </ul>
+              </div>
+              <div>
+                <a href="#contact" className="inline-block px-6 py-3 bg-green-500 hover:bg-green-400 text-white font-semibold rounded-full shadow-md transition-transform transform hover:scale-105">
+                  Contact Us to Rent Our Service
+                </a>
+              </div>
+            </div>
+            <div className="md:w-1/2">
+              <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md">
+                <div className="mb-4">
+                  <label className="block text-gray-700 font-medium mb-2" htmlFor="name">Name</label>
+                  <input type="text" id="name" name="name" value={formData.name} onChange={handleChange} required className="w-full border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                </div>
+                <div className="mb-4">
+                  <label className="block text-gray-700 font-medium mb-2" htmlFor="email">Email</label>
+                  <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} required className="w-full border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                </div>
+                <div className="mb-4">
+                  <label className="block text-gray-700 font-medium mb-2" htmlFor="message">Message</label>
+                  <textarea id="message" name="message" rows="4" value={formData.message} onChange={handleChange} required className="w-full border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-300"></textarea>
+                </div>
+                <button type="submit" className="w-full bg-blue-600 hover:bg-blue-500 text-white font-semibold py-2 px-4 rounded-md transition-colors">
+                  Send Message
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+      {/* Footer */}
+      <footer className="bg-gray-800 text-white py-8 px-6">
+        <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div>
+            <h3 className="font-bold text-lg mb-2">Bouncy Castles</h3>
+            <p>Bringing joy and bounce into every celebration!</p>
+          </div>
+          <div>
+            <h4 className="font-semibold mb-2">Address</h4>
+            <p>123 Happy Lane<br />Toronto, ON M1A 1A1</p>
+          </div>
+          <div>
+            <h4 className="font-semibold mb-2">Hours</h4>
+            <p>Mon - Fri: 9am - 5pm<br />Weekends: 10am - 4pm</p>
+          </div>
+          <div>
+            <h4 className="font-semibold mb-2">Social Media</h4>
+            <div className="flex space-x-4">
+              <a href="#" aria-label="Facebook" className="hover:text-blue-400">Facebook</a>
+              <a href="#" aria-label="Instagram" className="hover:text-pink-400">Instagram</a>
+              <a href="#" aria-label="Twitter" className="hover:text-blue-300">Twitter</a>
+            </div>
+          </div>
+        </div>
+        <div className="text-center mt-6 text-sm text-gray-400">
+          © {new Date().getFullYear()} Bouncy Castles. All rights reserved.
+        </div>
+      </footer>
+    </div>
+  );
+}
